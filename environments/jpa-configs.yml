@@ -1,0 +1,55 @@
+# Configurações de JPA por Ambiente
+# Este arquivo contém as configurações específicas de JPA para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          "[batch_size]": 10
+        format_sql: true
+
+# Homologação
+---
+spring:
+  profiles: hml
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          "[batch_size]": 30
+
+# Produção
+---
+spring:
+  profiles: prod
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          "[batch_size]": 50
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          "[batch_size]": 5

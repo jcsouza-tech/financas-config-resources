@@ -1,0 +1,34 @@
+# Configurações de Transação por Ambiente
+# Este arquivo contém as configurações específicas de transação para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+  transaction:
+    rollback-on-commit-failure: true
+    default-timeout: 30
+
+# Homologação
+---
+spring:
+  profiles: hml
+  transaction:
+    rollback-on-commit-failure: true
+    default-timeout: 30
+
+# Produção
+---
+spring:
+  profiles: prod
+  transaction:
+    rollback-on-commit-failure: true
+    default-timeout: 60
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+  transaction:
+    rollback-on-commit-failure: true
+    default-timeout: 30

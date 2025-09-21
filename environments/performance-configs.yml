@@ -1,0 +1,78 @@
+# Configurações de Performance por Ambiente
+# Este arquivo contém as configurações específicas de performance para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+performance:
+  enabled: false
+  jvm:
+    heap-size: 512m
+    max-heap-size: 1g
+    gc-type: G1GC
+  connection-pool:
+    max-connections: 10
+    min-connections: 2
+    timeout: 30000
+  thread-pool:
+    core-size: 5
+    max-size: 10
+    queue-capacity: 100
+
+# Homologação
+---
+spring:
+  profiles: hml
+performance:
+  enabled: true
+  jvm:
+    heap-size: 1g
+    max-heap-size: 2g
+    gc-type: G1GC
+  connection-pool:
+    max-connections: 30
+    min-connections: 5
+    timeout: 30000
+  thread-pool:
+    core-size: 10
+    max-size: 20
+    queue-capacity: 200
+
+# Produção
+---
+spring:
+  profiles: prod
+performance:
+  enabled: true
+  jvm:
+    heap-size: 2g
+    max-heap-size: 4g
+    gc-type: G1GC
+  connection-pool:
+    max-connections: 50
+    min-connections: 10
+    timeout: 30000
+  thread-pool:
+    core-size: 20
+    max-size: 40
+    queue-capacity: 500
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+performance:
+  enabled: true
+  jvm:
+    heap-size: 256m
+    max-heap-size: 512m
+    gc-type: SerialGC
+  connection-pool:
+    max-connections: 5
+    min-connections: 1
+    timeout: 30000
+  thread-pool:
+    core-size: 2
+    max-size: 5
+    queue-capacity: 50

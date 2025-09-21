@@ -1,0 +1,50 @@
+# Configurações de Timeout por Ambiente
+# Este arquivo contém as configurações específicas de timeout para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+timeout:
+  connection: 5000
+  read: 10000
+  write: 10000
+  call: 30000
+  database: 30000
+  rabbitmq: 15000
+
+# Homologação
+---
+spring:
+  profiles: hml
+timeout:
+  connection: 10000
+  read: 30000
+  write: 30000
+  call: 60000
+  database: 30000
+  rabbitmq: 30000
+
+# Produção
+---
+spring:
+  profiles: prod
+timeout:
+  connection: 15000
+  read: 60000
+  write: 60000
+  call: 120000
+  database: 30000
+  rabbitmq: 30000
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+timeout:
+  connection: 5000
+  read: 15000
+  write: 15000
+  call: 30000
+  database: 30000
+  rabbitmq: 15000

@@ -1,0 +1,50 @@
+# Configurações de Retry por Ambiente
+# Este arquivo contém as configurações específicas de retry para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+retry:
+  enabled: false
+  max-attempts: 3
+  initial-interval: 1000
+  max-interval: 10000
+  multiplier: 2.0
+  max-attempts: 3
+
+# Homologação
+---
+spring:
+  profiles: hml
+retry:
+  enabled: true
+  max-attempts: 3
+  initial-interval: 1000
+  max-interval: 10000
+  multiplier: 2.0
+  max-attempts: 3
+
+# Produção
+---
+spring:
+  profiles: prod
+retry:
+  enabled: true
+  max-attempts: 5
+  initial-interval: 2000
+  max-interval: 30000
+  multiplier: 2.0
+  max-attempts: 5
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+retry:
+  enabled: true
+  max-attempts: 2
+  initial-interval: 1000
+  max-interval: 5000
+  multiplier: 1.5
+  max-attempts: 2

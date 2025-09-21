@@ -1,0 +1,94 @@
+# Configuração de Homologação para Extrato API
+spring:
+  profiles:
+    active: hml
+  
+  # Configuração do DataSource para Homologação
+  datasource:
+    url: jdbc:mysql://${DB_HOST:hml-financas-db.cluster-xyz.us-east-1.rds.amazonaws.com}:${DB_PORT:3306}/${DB_NAME:financas_db}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  # Configuração JPA para Homologação
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          "[batch_size]": 30
+
+  # Configuração do RabbitMQ para Homologação
+  rabbitmq:
+    host: ${RABBITMQ_HOST:hml-financas-rabbitmq.elb.amazonaws.com}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD}
+    listener:
+      simple:
+        concurrency: 5
+        max-concurrency: 10
+        prefetch: 2
+
+# Configuração de observabilidade para Homologação
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 0.5
+
+# Configuração de logging para Homologação
+logging:
+  level:
+    "[br.com.financas.extrato_api]": INFO
+    "[org.springframework.web]": INFO
+    "[com.zaxxer.hikari]": INFO
+    "[org.springframework.transaction]": INFO
+    "[org.springframework.orm.jpa]": INFO
+    "[org.springframework.jdbc]": INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+
+# Configuração de parser para Homologação
+parser:
+  general:
+    parallel-processing: true
+    batch-size: 1000
+    validation:
+      strict-file-type: true
+      max-file-size-mb: 50
+
+# Configuração de CORS para Homologação
+spring:
+  web:
+    cors:
+      allowed-origins: 
+        - "https://hml-financas.example.com"
+        - "https://hml-app.financas.example.com"
+        - "http://localhost:3000"
+      allowed-methods: 
+        - "GET"
+        - "POST"
+        - "PUT"
+        - "DELETE"
+        - "OPTIONS"
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600

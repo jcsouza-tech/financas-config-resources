@@ -1,0 +1,89 @@
+# Configurações de Logging por Ambiente
+# Este arquivo contém as configurações específicas de logging para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+logging:
+  level:
+    "[br.com.financas.extrato_api]": DEBUG
+    "[org.springframework.web]": DEBUG
+    "[com.zaxxer.hikari]": DEBUG
+    "[org.springframework.transaction]": DEBUG
+    "[org.springframework.orm.jpa]": DEBUG
+    "[org.springframework.jdbc]": DEBUG
+    "[org.springframework.security]": DEBUG
+    "[org.springframework.oauth2]": DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+  file:
+    name: logs/financas-dev.log
+    max-size: 10MB
+    max-history: 30
+
+# Homologação
+---
+spring:
+  profiles: hml
+logging:
+  level:
+    "[br.com.financas.extrato_api]": INFO
+    "[org.springframework.web]": INFO
+    "[com.zaxxer.hikari]": INFO
+    "[org.springframework.transaction]": INFO
+    "[org.springframework.orm.jpa]": INFO
+    "[org.springframework.jdbc]": INFO
+    "[org.springframework.security]": INFO
+    "[org.springframework.oauth2]": INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+  file:
+    name: logs/financas-hml.log
+    max-size: 50MB
+    max-history: 30
+
+# Produção
+---
+spring:
+  profiles: prod
+logging:
+  level:
+    "[br.com.financas.extrato_api]": INFO
+    "[org.springframework.web]": WARN
+    "[com.zaxxer.hikari]": WARN
+    "[org.springframework.transaction]": WARN
+    "[org.springframework.orm.jpa]": WARN
+    "[org.springframework.jdbc]": WARN
+    "[org.springframework.security]": WARN
+    "[org.springframework.oauth2]": WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+  file:
+    name: logs/financas-prod.log
+    max-size: 100MB
+    max-history: 30
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+logging:
+  level:
+    "[br.com.financas.extrato_api]": INFO
+    "[org.springframework.web]": WARN
+    "[com.zaxxer.hikari]": WARN
+    "[org.springframework.transaction]": WARN
+    "[org.springframework.orm.jpa]": WARN
+    "[org.springframework.jdbc]": WARN
+    "[org.springframework.security]": WARN
+    "[org.springframework.oauth2]": WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+  file:
+    name: logs/financas-free.log
+    max-size: 10MB
+    max-history: 7

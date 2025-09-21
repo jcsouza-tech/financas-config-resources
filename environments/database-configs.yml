@@ -1,0 +1,62 @@
+# Configurações de Banco de Dados por Ambiente
+# Este arquivo contém as configurações específicas de banco para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:financas_db}
+    username: ${DB_USERNAME:appuser}
+    password: ${DB_PASSWORD:apppassword}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+# Homologação
+---
+spring:
+  profiles: hml
+  datasource:
+    url: jdbc:mysql://${DB_HOST:hml-financas-db.cluster-xyz.us-east-1.rds.amazonaws.com}:${DB_PORT:3306}/${DB_NAME:financas_db}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+# Produção
+---
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://${DB_HOST:financas-db.cluster-xyz.us-east-1.rds.amazonaws.com}:${DB_PORT:3306}/${DB_NAME:financas_db}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+  datasource:
+    url: jdbc:mysql://${DB_HOST:financas-db-free.cluster-xyz.us-east-1.rds.amazonaws.com}:${DB_PORT:3306}/${DB_NAME:financas_db}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000

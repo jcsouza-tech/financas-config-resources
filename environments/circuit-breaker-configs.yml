@@ -1,0 +1,46 @@
+# Configurações de Circuit Breaker por Ambiente
+# Este arquivo contém as configurações específicas de circuit breaker para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+circuit-breaker:
+  enabled: false
+  failure-threshold: 5
+  timeout: 3000
+  retry-attempts: 3
+  retry-delay: 1000
+
+# Homologação
+---
+spring:
+  profiles: hml
+circuit-breaker:
+  enabled: true
+  failure-threshold: 5
+  timeout: 5000
+  retry-attempts: 3
+  retry-delay: 1000
+
+# Produção
+---
+spring:
+  profiles: prod
+circuit-breaker:
+  enabled: true
+  failure-threshold: 3
+  timeout: 10000
+  retry-attempts: 5
+  retry-delay: 2000
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+circuit-breaker:
+  enabled: true
+  failure-threshold: 3
+  timeout: 5000
+  retry-attempts: 2
+  retry-delay: 1000

@@ -1,0 +1,77 @@
+# Configurações de Backup por Ambiente
+# Este arquivo contém as configurações específicas de backup para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+backup:
+  enabled: false
+  database:
+    enabled: false
+    schedule: "0 0 2 * * ?" # 2 AM daily
+    retention-days: 7
+  files:
+    enabled: false
+    schedule: "0 0 3 * * ?" # 3 AM daily
+    retention-days: 7
+  storage:
+    type: local
+    path: ./backups
+
+# Homologação
+---
+spring:
+  profiles: hml
+backup:
+  enabled: true
+  database:
+    enabled: true
+    schedule: "0 0 2 * * ?" # 2 AM daily
+    retention-days: 30
+  files:
+    enabled: true
+    schedule: "0 0 3 * * ?" # 3 AM daily
+    retention-days: 30
+  storage:
+    type: s3
+    bucket: hml-financas-backups
+    region: us-east-1
+
+# Produção
+---
+spring:
+  profiles: prod
+backup:
+  enabled: true
+  database:
+    enabled: true
+    schedule: "0 0 1 * * ?" # 1 AM daily
+    retention-days: 90
+  files:
+    enabled: true
+    schedule: "0 0 2 * * ?" # 2 AM daily
+    retention-days: 90
+  storage:
+    type: s3
+    bucket: prod-financas-backups
+    region: us-east-1
+    encryption: true
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+backup:
+  enabled: false
+  database:
+    enabled: false
+    schedule: "0 0 2 * * ?" # 2 AM daily
+    retention-days: 3
+  files:
+    enabled: false
+    schedule: "0 0 3 * * ?" # 3 AM daily
+    retention-days: 3
+  storage:
+    type: local
+    path: ./backups

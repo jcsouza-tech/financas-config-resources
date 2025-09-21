@@ -1,0 +1,70 @@
+# Configurações de RabbitMQ por Ambiente
+# Este arquivo contém as configurações específicas de RabbitMQ para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD:admin123}
+    virtual-host: /
+    connection-timeout: 15000
+    listener:
+      simple:
+        concurrency: 2
+        max-concurrency: 5
+        prefetch: 1
+
+# Homologação
+---
+spring:
+  profiles: hml
+  rabbitmq:
+    host: ${RABBITMQ_HOST:hml-financas-rabbitmq.elb.amazonaws.com}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD}
+    virtual-host: /
+    connection-timeout: 30000
+    listener:
+      simple:
+        concurrency: 5
+        max-concurrency: 10
+        prefetch: 2
+
+# Produção
+---
+spring:
+  profiles: prod
+  rabbitmq:
+    host: ${RABBITMQ_HOST:financas-rabbitmq.elb.amazonaws.com}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD}
+    virtual-host: /
+    connection-timeout: 30000
+    listener:
+      simple:
+        concurrency: 10
+        max-concurrency: 20
+        prefetch: 5
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD:admin123}
+    virtual-host: /
+    connection-timeout: 15000
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 2
+        prefetch: 1

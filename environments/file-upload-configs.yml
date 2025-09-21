@@ -1,0 +1,78 @@
+# Configurações de File Upload por Ambiente
+# Este arquivo contém as configurações específicas de upload de arquivos para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+      file-size-threshold: 2MB
+      resolve-lazily: false
+  web:
+    resources:
+      static-locations: classpath:/static/,file:uploads/
+      cache:
+        period: 0
+        cachecontrol:
+          max-age: 0
+
+# Homologação
+---
+spring:
+  profiles: hml
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 20MB
+      file-size-threshold: 2MB
+      resolve-lazily: false
+  web:
+    resources:
+      static-locations: classpath:/static/,file:uploads/
+      cache:
+        period: 3600
+        cachecontrol:
+          max-age: 3600
+
+# Produção
+---
+spring:
+  profiles: prod
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 100MB
+      file-size-threshold: 2MB
+      resolve-lazily: false
+  web:
+    resources:
+      static-locations: classpath:/static/,file:uploads/
+      cache:
+        period: 86400
+        cachecontrol:
+          max-age: 86400
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 2MB
+      max-request-size: 5MB
+      file-size-threshold: 1MB
+      resolve-lazily: false
+  web:
+    resources:
+      static-locations: classpath:/static/,file:uploads/
+      cache:
+        period: 0
+        cachecontrol:
+          max-age: 0

@@ -1,0 +1,64 @@
+# Configurações Compartilhadas do RabbitMQ
+# Estas configurações são aplicadas a todos os microserviços que usam RabbitMQ
+
+spring:
+  # Configurações comuns do RabbitMQ
+  rabbitmq:
+    virtual-host: /
+    connection-timeout: 15000
+    listener:
+      simple:
+        acknowledge-mode: auto
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 1000
+          max-interval: 10000
+          multiplier: 2
+        concurrency: 3
+        max-concurrency: 10
+        prefetch: 1
+
+# Configurações específicas por ambiente
+---
+spring:
+  profiles: dev
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD:admin123}
+    listener:
+      simple:
+        concurrency: 2
+        max-concurrency: 5
+        prefetch: 1
+
+---
+spring:
+  profiles: prod
+  rabbitmq:
+    host: ${RABBITMQ_HOST:financas-rabbitmq.elb.amazonaws.com}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD}
+    connection-timeout: 30000
+    listener:
+      simple:
+        concurrency: 10
+        max-concurrency: 20
+        prefetch: 5
+
+---
+spring:
+  profiles: hml
+  rabbitmq:
+    host: ${RABBITMQ_HOST:hml-financas-rabbitmq.elb.amazonaws.com}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD}
+    listener:
+      simple:
+        concurrency: 5
+        max-concurrency: 10
+        prefetch: 2

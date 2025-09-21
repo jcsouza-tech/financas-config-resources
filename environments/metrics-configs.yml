@@ -1,0 +1,105 @@
+# Configurações de Métricas por Ambiente
+# Este arquivo contém as configurações específicas de métricas para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 10s
+      simple:
+        enabled: false
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+      percentiles:
+        "[http.server.requests]": 0.5, 0.95, 0.99
+      slo:
+        "[http.server.requests]": 50ms, 100ms, 200ms, 500ms, 1s, 2s, 5s
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+# Homologação
+---
+spring:
+  profiles: hml
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 30s
+      simple:
+        enabled: false
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+      percentiles:
+        "[http.server.requests]": 0.5, 0.95, 0.99
+      slo:
+        "[http.server.requests]": 50ms, 100ms, 200ms, 500ms, 1s, 2s, 5s
+  tracing:
+    sampling:
+      probability: 0.5
+  zipkin:
+    tracing:
+      endpoint: http://hml-zipkin:9411/api/v2/spans
+
+# Produção
+---
+spring:
+  profiles: prod
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 60s
+      simple:
+        enabled: false
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+      percentiles:
+        "[http.server.requests]": 0.5, 0.95, 0.99
+      slo:
+        "[http.server.requests]": 50ms, 100ms, 200ms, 500ms, 1s, 2s, 5s
+  tracing:
+    sampling:
+      probability: 0.1
+  zipkin:
+    tracing:
+      endpoint: http://prod-zipkin:9411/api/v2/spans
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: false
+      simple:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": false
+      percentiles:
+        "[http.server.requests]": 0.5, 0.95
+      slo:
+        "[http.server.requests]": 100ms, 500ms, 1s
+  tracing:
+    sampling:
+      probability: 0.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans

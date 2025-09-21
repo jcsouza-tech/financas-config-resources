@@ -1,0 +1,54 @@
+# Configurações de Error Handling por Ambiente
+# Este arquivo contém as configurações específicas de tratamento de erros para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+error:
+  include-stacktrace: always
+  include-message: always
+  include-binding-errors: always
+  include-exception: true
+  whitelabel:
+    enabled: true
+  path: /error
+
+# Homologação
+---
+spring:
+  profiles: hml
+error:
+  include-stacktrace: on_param
+  include-message: always
+  include-binding-errors: always
+  include-exception: false
+  whitelabel:
+    enabled: true
+  path: /error
+
+# Produção
+---
+spring:
+  profiles: prod
+error:
+  include-stacktrace: never
+  include-message: never
+  include-binding-errors: never
+  include-exception: false
+  whitelabel:
+    enabled: false
+  path: /error
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+error:
+  include-stacktrace: on_param
+  include-message: always
+  include-binding-errors: always
+  include-exception: false
+  whitelabel:
+    enabled: true
+  path: /error

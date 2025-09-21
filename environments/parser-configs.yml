@@ -1,0 +1,50 @@
+# Configurações de Parser por Ambiente
+# Este arquivo contém as configurações específicas de parser para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+parser:
+  general:
+    parallel-processing: false
+    batch-size: 100
+    validation:
+      strict-file-type: false
+      max-file-size-mb: 10
+
+# Homologação
+---
+spring:
+  profiles: hml
+parser:
+  general:
+    parallel-processing: true
+    batch-size: 1000
+    validation:
+      strict-file-type: true
+      max-file-size-mb: 50
+
+# Produção
+---
+spring:
+  profiles: prod
+parser:
+  general:
+    parallel-processing: true
+    batch-size: 2000
+    validation:
+      strict-file-type: true
+      max-file-size-mb: 100
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+parser:
+  general:
+    parallel-processing: false
+    batch-size: 50
+    validation:
+      strict-file-type: false
+      max-file-size-mb: 5

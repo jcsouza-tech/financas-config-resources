@@ -1,0 +1,220 @@
+# Configuração Base do Extrato API
+# Esta configuração é aplicada a todos os ambientes
+
+spring:
+  application:
+    name: extrato-api
+  
+  # Configuração do DataSource
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      auto-commit: false
+      connection-test-query: SELECT 1
+      validation-timeout: 5000
+      leak-detection-threshold: 60000
+      register-mbeans: true
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+
+  # Configurações JPA
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        transaction:
+          jta:
+            platform: enable
+        connection:
+          "[provider_disables_autocommit]": true
+        jdbc:
+          "[batch_size]": 20
+          "[batch_versioned_data]": true
+        "[order_inserts]": true
+        "[order_updates]": true
+        cache:
+          "[use_second_level_cache]": false
+          "[use_query_cache]": false
+
+  # Configuração do RabbitMQ
+  rabbitmq:
+    virtual-host: /
+    connection-timeout: 15000
+    listener:
+      simple:
+        acknowledge-mode: auto
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 1000
+          max-interval: 10000
+          multiplier: 2
+        concurrency: 3
+        max-concurrency: 10
+        prefetch: 1
+
+  # Configuração de CORS
+  web:
+    cors:
+      allowed-origins: 
+        - "http://localhost:3000"
+        - "http://localhost:4000"
+        - "http://127.0.0.1:3000"
+        - "http://127.0.0.1:4000"
+      allowed-methods: 
+        - "GET"
+        - "POST"
+        - "PUT"
+        - "DELETE"
+        - "OPTIONS"
+        - "PATCH"
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600
+
+  # Configuração de transação
+  transaction:
+    rollback-on-commit-failure: true
+    default-timeout: 30
+
+  jackson:
+    default-property-inclusion: non_null
+
+# Configuração de bancos suportados
+bancos:
+  suporte:
+    names:
+      - "banco-do-brasil"
+      - "itau"
+
+# Configuração dos Parsers de Extrato
+parser:
+  auto-discovery:
+    base-package: "br.com.financas.extrato_api.parser"
+    enabled: true
+    scan-depth: 2
+  config:
+    # Banco do Brasil - aceita CSV
+    banco-do-brasil:
+      name: "Banco do Brasil"
+      file-patterns:
+        - ".*bb.*\\.csv$"
+        - ".*banco.*brasil.*\\.csv$"
+        - ".*bb_.*\\.csv$"
+        - ".*extrato.*bb.*\\.csv$"
+        - "(?i).*extrato.*conta.*corrente.*\\d{6}.*"
+      supported-extensions: [".csv"]
+      csv:
+        separator: ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"
+        date-format: "dd/MM/yyyy"
+        date-regex: "^\\d{2}/\\d{2}/\\d{4}$"
+        value-regex: "^[+-]?\\d{1,3}([.,]\\d{3})*([.,]\\d{1,2})?$|^[+-]?\\d+([.,]\\d{1,2})?$"
+        skip-line: 1
+        pais: "BR"
+        idioma: "pt"
+    
+    # Itaú - aceita PDF
+    itau:
+      name: "Itaú"
+      file-patterns:
+        - ".*itau.*\\.pdf$"
+        - ".*itáu.*\\.pdf$"
+        - ".*itau_.*\\.pdf$"
+        - ".*extrato.*itau.*\\.pdf$"
+      supported-extensions: [".pdf"]
+      pdf:
+        date-format: "dd/MM/yyyy"
+        date-regex: "^\\d{2}/\\d{2}/\\d{4}$"
+        value-regex: "^[+-]?\\d{1,3}([.,]\\d{3})*([.,]\\d{1,2})?$|^[+-]?\\d+([.,]\\d{1,2})?$"
+        transaction-regex: "(\\d{2}/\\d{2}/\\d{4})\\s+(.+?)\\s+([+-]?\\d{1,3}(?:\\.\\d{3})*(?:,\\d{2})?)(?:\\s+([+-]?\\d{1,3}(?:\\.\\d{3})*(?:,\\d{2})?))?\\s*$"
+        header-regex: ".*agência:.*|.*conta:.*|.*saldo em conta.*|.*Limite da Conta.*|.*extrato conta.*|.*período de visualização.*|.*data lançamentos valor.*|.*extrato.*conta.*corrente.*|.*banco.*itau.*|.*itau.*banco.*"
+        pais: "BR"
+        idioma: "pt"
+        text-extraction:
+          sort-by-position: true
+          encoding: "UTF-8"
+  
+  general:
+    parallel-processing: true
+    batch-size: 1000
+    validation:
+      strict-file-type: true
+      max-file-size-mb: 50
+
+# Configuração de observabilidade
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,tracing
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      access: read-only
+    prometheus:
+      access: read-only
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+      percentiles:
+        "[http.server.requests]": 0.5, 0.95, 0.99
+      slo:
+        "[http.server.requests]": 50ms, 100ms, 200ms, 500ms, 1s, 2s, 5s
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+# Configuração de logging
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId:-},%X{spanId:-}] %logger{36} - %msg%n"
+  level:
+    "[br.com.financas.extrato_api]": INFO
+    "[org.springframework.web]": INFO
+    "[com.zaxxer.hikari]": INFO
+    "[org.springframework.transaction]": INFO
+    "[org.springframework.orm.jpa]": INFO
+    "[org.springframework.jdbc]": INFO
+
+# Configuração do Swagger/OpenAPI
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operationsSorter: method
+    tagsSorter: alpha
+    tryItOutEnabled: true
+    filter: true
+    displayRequestDuration: true
+    displayOperationId: true
+    showExtensions: true
+    showCommonExtensions: true
+  override-with-generic-response: false
+  use-hal-as-default-json-media-type: false

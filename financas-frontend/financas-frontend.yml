@@ -1,0 +1,87 @@
+# Configuração Base do Frontend de Finanças
+# Esta configuração é aplicada a todos os ambientes
+
+# Configurações da aplicação
+app:
+  name: financas-frontend
+  version: 1.0.0
+  description: Frontend para gerenciamento de extratos bancários
+
+# Configurações da API
+api:
+  base-url: ${API_BASE_URL:http://localhost:8080}
+  timeout: 30000
+  retry:
+    max-attempts: 3
+    delay: 1000
+
+# Configurações de autenticação
+auth:
+  enabled: false
+  token-key: ${AUTH_TOKEN_KEY:financas-secret-key}
+  token-expiration: 3600000 # 1 hora
+
+# Configurações de upload
+upload:
+  max-file-size: 10485760 # 10MB
+  allowed-types:
+    - "text/csv"
+    - "application/pdf"
+  max-files: 5
+
+# Configurações de paginação
+pagination:
+  default-size: 10
+  max-size: 100
+  sizes: [10, 20, 50, 100]
+
+# Configurações de cache
+cache:
+  enabled: true
+  ttl: 300000 # 5 minutos
+  max-size: 1000
+
+# Configurações de notificações
+notifications:
+  enabled: true
+  position: "top-right"
+  duration: 5000
+
+# Configurações específicas por ambiente
+---
+spring:
+  profiles: dev
+api:
+  base-url: ${API_BASE_URL:http://localhost:8080}
+upload:
+  max-file-size: 5242880 # 5MB
+cache:
+  enabled: false
+notifications:
+  enabled: true
+
+---
+spring:
+  profiles: prod
+api:
+  base-url: ${API_BASE_URL:https://api.financas.example.com}
+upload:
+  max-file-size: 10485760 # 10MB
+cache:
+  enabled: true
+  ttl: 600000 # 10 minutos
+notifications:
+  enabled: true
+
+---
+spring:
+  profiles: hml
+api:
+  base-url: ${API_BASE_URL:https://hml-api.financas.example.com}
+upload:
+  max-file-size: 10485760 # 10MB
+cache:
+  enabled: true
+  ttl: 300000 # 5 minutos
+notifications:
+  enabled: true

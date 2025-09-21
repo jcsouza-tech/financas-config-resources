@@ -1,0 +1,118 @@
+# Configurações de Observabilidade por Ambiente
+# Este arquivo contém as configurações específicas de monitoramento para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  level:
+    "[br.com.financas.extrato_api]": DEBUG
+    "[org.springframework.web]": DEBUG
+    "[com.zaxxer.hikari]": DEBUG
+    "[org.springframework.transaction]": DEBUG
+    "[org.springframework.orm.jpa]": DEBUG
+    "[org.springframework.jdbc]": DEBUG
+
+# Homologação
+---
+spring:
+  profiles: hml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 0.5
+
+logging:
+  level:
+    "[br.com.financas.extrato_api]": INFO
+    "[org.springframework.web]": INFO
+    "[com.zaxxer.hikari]": INFO
+    "[org.springframework.transaction]": INFO
+    "[org.springframework.orm.jpa]": INFO
+    "[org.springframework.jdbc]": INFO
+
+# Produção
+---
+spring:
+  profiles: prod
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 0.1
+
+logging:
+  level:
+    "[br.com.financas.extrato_api]": INFO
+    "[org.springframework.web]": WARN
+    "[com.zaxxer.hikari]": WARN
+    "[org.springframework.transaction]": WARN
+    "[org.springframework.orm.jpa]": WARN
+    "[org.springframework.jdbc]": WARN
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: false
+  tracing:
+    sampling:
+      probability: 0.0
+
+logging:
+  level:
+    "[br.com.financas.extrato_api]": INFO
+    "[org.springframework.web]": WARN
+    "[com.zaxxer.hikari]": WARN
+    "[org.springframework.transaction]": WARN
+    "[org.springframework.orm.jpa]": WARN
+    "[org.springframework.jdbc]": WARN

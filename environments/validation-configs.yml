@@ -1,0 +1,74 @@
+# Configurações de Validação por Ambiente
+# Este arquivo contém as configurações específicas de validação para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+validation:
+  enabled: true
+  strict-mode: false
+  file-validation:
+    enabled: true
+    max-size: 5MB
+    allowed-types:
+      - "text/csv"
+      - "application/pdf"
+  data-validation:
+    enabled: true
+    strict-format: false
+    required-fields: true
+
+# Homologação
+---
+spring:
+  profiles: hml
+validation:
+  enabled: true
+  strict-mode: true
+  file-validation:
+    enabled: true
+    max-size: 10MB
+    allowed-types:
+      - "text/csv"
+      - "application/pdf"
+  data-validation:
+    enabled: true
+    strict-format: true
+    required-fields: true
+
+# Produção
+---
+spring:
+  profiles: prod
+validation:
+  enabled: true
+  strict-mode: true
+  file-validation:
+    enabled: true
+    max-size: 50MB
+    allowed-types:
+      - "text/csv"
+      - "application/pdf"
+  data-validation:
+    enabled: true
+    strict-format: true
+    required-fields: true
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+validation:
+  enabled: true
+  strict-mode: false
+  file-validation:
+    enabled: true
+    max-size: 2MB
+    allowed-types:
+      - "text/csv"
+      - "application/pdf"
+  data-validation:
+    enabled: true
+    strict-format: false
+    required-fields: true

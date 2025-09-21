@@ -1,0 +1,60 @@
+# Configurações de Session por Ambiente
+# Este arquivo contém as configurações específicas de session para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+  session:
+    store-type: none
+    timeout: 30m
+    cookie:
+      name: FINANCAS_SESSION
+      http-only: true
+      secure: false
+      same-site: lax
+
+# Homologação
+---
+spring:
+  profiles: hml
+  session:
+    store-type: jdbc
+    timeout: 30m
+    jdbc:
+      initialize-schema: always
+      table-name: SPRING_SESSION
+    cookie:
+      name: FINANCAS_SESSION
+      http-only: true
+      secure: true
+      same-site: strict
+
+# Produção
+---
+spring:
+  profiles: prod
+  session:
+    store-type: jdbc
+    timeout: 30m
+    jdbc:
+      initialize-schema: never
+      table-name: SPRING_SESSION
+    cookie:
+      name: FINANCAS_SESSION
+      http-only: true
+      secure: true
+      same-site: strict
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+  session:
+    store-type: none
+    timeout: 15m
+    cookie:
+      name: FINANCAS_SESSION
+      http-only: true
+      secure: false
+      same-site: lax

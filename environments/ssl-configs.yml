@@ -1,0 +1,46 @@
+# Configurações de SSL por Ambiente
+# Este arquivo contém as configurações específicas de SSL para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+server:
+  port: 8080
+  ssl:
+    enabled: false
+
+# Homologação
+---
+spring:
+  profiles: hml
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: ${SSL_KEY_STORE}
+    key-store-password: ${SSL_KEY_STORE_PASSWORD}
+    key-store-type: PKCS12
+    key-alias: financas-hml
+
+# Produção
+---
+spring:
+  profiles: prod
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: ${SSL_KEY_STORE}
+    key-store-password: ${SSL_KEY_STORE_PASSWORD}
+    key-store-type: PKCS12
+    key-alias: financas-prod
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+server:
+  port: 8080
+  ssl:
+    enabled: false

@@ -1,0 +1,58 @@
+# Configurações de Security Headers por Ambiente
+# Este arquivo contém as configurações específicas de security headers para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+security:
+  headers:
+    enabled: false
+    content-security-policy: "default-src 'self'"
+    x-frame-options: DENY
+    x-content-type-options: nosniff
+    x-xss-protection: "1; mode=block"
+    strict-transport-security: "max-age=31536000; includeSubDomains"
+    referrer-policy: strict-origin-when-cross-origin
+
+# Homologação
+---
+spring:
+  profiles: hml
+security:
+  headers:
+    enabled: true
+    content-security-policy: "default-src 'self' 'unsafe-inline' 'unsafe-eval'"
+    x-frame-options: DENY
+    x-content-type-options: nosniff
+    x-xss-protection: "1; mode=block"
+    strict-transport-security: "max-age=31536000; includeSubDomains"
+    referrer-policy: strict-origin-when-cross-origin
+
+# Produção
+---
+spring:
+  profiles: prod
+security:
+  headers:
+    enabled: true
+    content-security-policy: "default-src 'self' 'unsafe-inline' 'unsafe-eval'"
+    x-frame-options: DENY
+    x-content-type-options: nosniff
+    x-xss-protection: "1; mode=block"
+    strict-transport-security: "max-age=31536000; includeSubDomains"
+    referrer-policy: strict-origin-when-cross-origin
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+security:
+  headers:
+    enabled: false
+    content-security-policy: "default-src 'self'"
+    x-frame-options: DENY
+    x-content-type-options: nosniff
+    x-xss-protection: "1; mode=block"
+    strict-transport-security: "max-age=31536000; includeSubDomains"
+    referrer-policy: strict-origin-when-cross-origin

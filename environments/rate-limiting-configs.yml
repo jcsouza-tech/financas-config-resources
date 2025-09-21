@@ -1,0 +1,46 @@
+# Configurações de Rate Limiting por Ambiente
+# Este arquivo contém as configurações específicas de rate limiting para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+rate-limiting:
+  enabled: false
+  requests-per-minute: 1000
+  burst-capacity: 1000
+  window-size: 60
+  cleanup-interval: 60
+
+# Homologação
+---
+spring:
+  profiles: hml
+rate-limiting:
+  enabled: true
+  requests-per-minute: 500
+  burst-capacity: 500
+  window-size: 60
+  cleanup-interval: 60
+
+# Produção
+---
+spring:
+  profiles: prod
+rate-limiting:
+  enabled: true
+  requests-per-minute: 100
+  burst-capacity: 100
+  window-size: 60
+  cleanup-interval: 60
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+rate-limiting:
+  enabled: true
+  requests-per-minute: 50
+  burst-capacity: 50
+  window-size: 60
+  cleanup-interval: 60

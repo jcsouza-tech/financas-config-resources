@@ -1,0 +1,94 @@
+# Configurações de Segurança por Ambiente
+# Este arquivo contém as configurações específicas de segurança para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+  security:
+    user:
+      name: admin
+      password: admin
+      roles: ADMIN
+  oauth2:
+    client:
+      registration:
+        google:
+          client-id: ${GOOGLE_CLIENT_ID:dev-client-id}
+          client-secret: ${GOOGLE_CLIENT_SECRET:dev-client-secret}
+          scope: openid,profile,email
+      provider:
+        google:
+          authorization-uri: https://accounts.google.com/o/oauth2/auth
+          token-uri: https://oauth2.googleapis.com/token
+          user-info-uri: https://www.googleapis.com/oauth2/v2/userinfo
+          user-name-attribute: id
+
+# Homologação
+---
+spring:
+  profiles: hml
+  security:
+    user:
+      name: ${ADMIN_USERNAME:hml-admin}
+      password: ${ADMIN_PASSWORD}
+      roles: ADMIN
+  oauth2:
+    client:
+      registration:
+        google:
+          client-id: ${GOOGLE_CLIENT_ID}
+          client-secret: ${GOOGLE_CLIENT_SECRET}
+          scope: openid,profile,email
+      provider:
+        google:
+          authorization-uri: https://accounts.google.com/o/oauth2/auth
+          token-uri: https://oauth2.googleapis.com/token
+          user-info-uri: https://www.googleapis.com/oauth2/v2/userinfo
+          user-name-attribute: id
+
+# Produção
+---
+spring:
+  profiles: prod
+  security:
+    user:
+      name: ${ADMIN_USERNAME}
+      password: ${ADMIN_PASSWORD}
+      roles: ADMIN
+  oauth2:
+    client:
+      registration:
+        google:
+          client-id: ${GOOGLE_CLIENT_ID}
+          client-secret: ${GOOGLE_CLIENT_SECRET}
+          scope: openid,profile,email
+      provider:
+        google:
+          authorization-uri: https://accounts.google.com/o/oauth2/auth
+          token-uri: https://oauth2.googleapis.com/token
+          user-info-uri: https://www.googleapis.com/oauth2/v2/userinfo
+          user-name-attribute: id
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+  security:
+    user:
+      name: admin
+      password: admin
+      roles: ADMIN
+  oauth2:
+    client:
+      registration:
+        google:
+          client-id: ${GOOGLE_CLIENT_ID:free-client-id}
+          client-secret: ${GOOGLE_CLIENT_SECRET:free-client-secret}
+          scope: openid,profile,email
+      provider:
+        google:
+          authorization-uri: https://accounts.google.com/o/oauth2/auth
+          token-uri: https://oauth2.googleapis.com/token
+          user-info-uri: https://www.googleapis.com/oauth2/v2/userinfo
+          user-name-attribute: id

@@ -1,0 +1,60 @@
+# Configurações de WebSocket por Ambiente
+# Este arquivo contém as configurações específicas de WebSocket para cada ambiente
+
+# Desenvolvimento
+---
+spring:
+  profiles: dev
+websocket:
+  enabled: true
+  endpoint: /ws
+  allowed-origins: 
+    - "http://localhost:3000"
+    - "http://localhost:4000"
+    - "http://127.0.0.1:3000"
+    - "http://127.0.0.1:4000"
+  message-size-limit: 8192
+  buffer-size-limit: 8192
+  session-timeout: 30000
+
+# Homologação
+---
+spring:
+  profiles: hml
+websocket:
+  enabled: true
+  endpoint: /ws
+  allowed-origins: 
+    - "https://hml-financas.example.com"
+    - "https://hml-app.financas.example.com"
+  message-size-limit: 16384
+  buffer-size-limit: 16384
+  session-timeout: 60000
+
+# Produção
+---
+spring:
+  profiles: prod
+websocket:
+  enabled: true
+  endpoint: /ws
+  allowed-origins: 
+    - "https://financas.example.com"
+    - "https://app.financas.example.com"
+  message-size-limit: 32768
+  buffer-size-limit: 32768
+  session-timeout: 120000
+
+# AWS Free Tier (para testes)
+---
+spring:
+  profiles: aws-free
+websocket:
+  enabled: true
+  endpoint: /ws
+  allowed-origins: 
+    - "http://localhost:3000"
+    - "http://127.0.0.1:3000"
+  message-size-limit: 4096
+  buffer-size-limit: 4096
+  session-timeout: 15000
