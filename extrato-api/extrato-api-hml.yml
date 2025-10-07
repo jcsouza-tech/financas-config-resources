@@ -37,6 +37,23 @@ spring:
         max-concurrency: 10
         prefetch: 2
 
+  # Configuração de CORS para Homologação
+  web:
+    cors:
+      allowed-origins: 
+        - "https://hml-financas.example.com"
+        - "https://hml-app.financas.example.com"
+        - "http://localhost:3000"
+      allowed-methods: 
+        - "GET"
+        - "POST"
+        - "PUT"
+        - "DELETE"
+        - "OPTIONS"
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600
+
 # Configuração de observabilidade para Homologação
 management:
   endpoints:
@@ -75,20 +92,3 @@ parser:
       strict-file-type: true
       max-file-size-mb: 50
 
-# Configuração de CORS para Homologação
-spring:
-  web:
-    cors:
-      allowed-origins: 
-        - "https://hml-financas.example.com"
-        - "https://hml-app.financas.example.com"
-        - "http://localhost:3000"
-      allowed-methods: 
-        - "GET"
-        - "POST"
-        - "PUT"
-        - "DELETE"
-        - "OPTIONS"
-      allowed-headers: "*"
-      allow-credentials: true
-      max-age: 3600

@@ -37,6 +37,22 @@ spring:
         max-concurrency: 20
         prefetch: 5
 
+  # Configuração de CORS para Produção
+  web:
+    cors:
+      allowed-origins: 
+        - "https://financas.example.com"
+        - "https://app.financas.example.com"
+      allowed-methods: 
+        - "GET"
+        - "POST"
+        - "PUT"
+        - "DELETE"
+        - "OPTIONS"
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600
+
 # Configuração de observabilidade para Produção
 management:
   endpoints:
@@ -75,22 +91,6 @@ parser:
       strict-file-type: true
       max-file-size-mb: 100
 
-# Configuração de CORS para Produção
-spring:
-  web:
-    cors:
-      allowed-origins: 
-        - "https://financas.example.com"
-        - "https://app.financas.example.com"
-      allowed-methods: 
-        - "GET"
-        - "POST"
-        - "PUT"
-        - "DELETE"
-        - "OPTIONS"
-      allowed-headers: "*"
-      allow-credentials: true
-      max-age: 3600
 
 # Configuração de segurança para Produção
 server:
