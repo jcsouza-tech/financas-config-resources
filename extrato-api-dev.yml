@@ -38,6 +38,17 @@ spring:
         max-concurrency: 5
         prefetch: 1
 
+  # Configuração de CORS para Desenvolvimento
+  web:
+    cors:
+      allowed-origins: 
+        - "http://localhost:3000"
+        - "http://localhost:4000"
+        - "http://127.0.0.1:3000"
+        - "http://127.0.0.1:4000"
+        - "http://localhost:8080"
+        - "http://127.0.0.1:8080"
+
 # Configuração de observabilidade para Desenvolvimento
 management:
   endpoints:
@@ -76,14 +87,3 @@ parser:
       strict-file-type: false
       max-file-size-mb: 10
 
-# Configuração de CORS para Desenvolvimento
-spring:
-  web:
-    cors:
-      allowed-origins: 
-        - "http://localhost:3000"
-        - "http://localhost:4000"
-        - "http://127.0.0.1:3000"
-        - "http://127.0.0.1:4000"
-        - "http://localhost:8080"
-        - "http://127.0.0.1:8080"
