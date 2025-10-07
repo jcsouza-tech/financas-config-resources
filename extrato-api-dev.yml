@@ -1,8 +1,5 @@
 # Configuração de Desenvolvimento para Extrato API
 spring:
-  profiles:
-    active: dev
-  
   # Configuração do DataSource para Desenvolvimento
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:financas_db}

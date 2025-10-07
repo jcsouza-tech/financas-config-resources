@@ -1,8 +1,5 @@
 # Configuração de Produção para Extrato API
 spring:
-  profiles:
-    active: prod
-  
   # Configuração do DataSource para Produção
   datasource:
     url: jdbc:mysql://${DB_HOST:financas-db.cluster-xyz.us-east-1.rds.amazonaws.com}:${DB_PORT:3306}/${DB_NAME:financas_db}

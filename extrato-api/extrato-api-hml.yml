@@ -1,8 +1,5 @@
 # Configuração de Homologação para Extrato API
 spring:
-  profiles:
-    active: hml
-  
   # Configuração do DataSource para Homologação
   datasource:
     url: jdbc:mysql://${DB_HOST:hml-financas-db.cluster-xyz.us-east-1.rds.amazonaws.com}:${DB_PORT:3306}/${DB_NAME:financas_db}
