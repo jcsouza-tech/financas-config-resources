@@ -4,6 +4,13 @@
 spring:
   application:
     name: extrato-api
+
+  config:
+    import:
+      - classpath:banks-conf.yml
+      - classpath:database.yml
+      - classpath:event-broker.yml
+      - classpath:observability.yml
   
   servlet:
     multipart:
