@@ -1,10 +1,13 @@
-# Configurações Compartilhadas de Banco de Dados
-# Estas configurações são aplicadas a todos os microserviços que usam banco de dados
-
+# Configuração de Banco de Dados para Desenvolvimento
 spring:
-  # Configurações comuns do DataSource
+  # Configuração do DataSource com HikariCP
   datasource:
+    url: jdbc:mysql://mysql:3306/financas_db
     driverClassName: com.mysql.cj.jdbc.Driver
+    username: appuser
+    password: apppassword
+    
+    # ✅ Configurações específicas do HikariCP
     hikari:
       # Pool de conexões
       maximum-pool-size: 20
@@ -34,12 +37,12 @@ spring:
         elideSetAutoCommits: true
         maintainTimeStats: false
 
-  # Configurações JPA comuns
+  # Configurações JPA com transações
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: update
-    show-sql: false
+      ddl-auto: create-drop
+    show-sql: true
     
     # Configurações de transação
     properties:
@@ -59,56 +62,3 @@ spring:
         cache:
           "[use_second_level_cache]": false
           "[use_query_cache]": false
-
-  # Configurações de transação
-  transaction:
-    rollback-on-commit-failure: true
-    default-timeout: 30
-
-# Configurações específicas por ambiente
----
-spring:
-  profiles: dev
-  datasource:
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 2
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        jdbc:
-          "[batch_size]": 10
-        format_sql: true
-
----
-spring:
-  profiles: prod
-  datasource:
-    hikari:
-      maximum-pool-size: 50
-      minimum-idle: 10
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    properties:
-      hibernate:
-        jdbc:
-          "[batch_size]": 50
-
----
-spring:
-  profiles: hml
-  datasource:
-    hikari:
-      maximum-pool-size: 30
-      minimum-idle: 5
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    properties:
-      hibernate:
-        jdbc:
-          "[batch_size]": 30

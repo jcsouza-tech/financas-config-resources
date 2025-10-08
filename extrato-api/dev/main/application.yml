@@ -1,0 +1,60 @@
+# Configuração Base do Extrato API
+# Esta configuração é aplicada a todos os ambientes
+
+spring:
+  application:
+    name: extrato-api
+  
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+      file-size-threshold: 2MB
+      resolve-lazily: false
+
+  # Configuração de CORS
+  web:
+    cors:
+      allowed-origins: 
+        - "http://localhost:3000"
+        - "http://localhost:4000"
+        - "http://127.0.0.1:3000"
+        - "http://127.0.0.1:4000"
+      allowed-methods: 
+        - "GET"
+        - "POST"
+        - "PUT"
+        - "DELETE"
+        - "OPTIONS"
+        - "PATCH"
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600
+
+  # Configuração de transação
+  transaction:
+    rollback-on-commit-failure: true
+    default-timeout: 30
+
+  jackson:
+    default-property-inclusion: non_null
+
+# Configuração do Swagger/OpenAPI
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operationsSorter: method
+    tagsSorter: alpha
+    tryItOutEnabled: true
+    filter: true
+    displayRequestDuration: true
+    displayOperationId: true
+    showExtensions: true
+    showCommonExtensions: true
+  override-with-generic-response: false
+  use-hal-as-default-json-media-type: false

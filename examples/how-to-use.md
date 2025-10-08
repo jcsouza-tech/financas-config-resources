@@ -158,10 +158,10 @@ EOF
 
 ```bash
 # Editar arquivo
-vim extrato-api/extrato-api-dev.yml
+vim extrato-api/banks-conf.yml
 
 # Commit
-git add extrato-api/extrato-api-dev.yml
+git add extrato-api/banks-conf.yml
 git commit -m "fix: update database connection timeout"
 git push origin main
 ```
@@ -196,7 +196,7 @@ curl -X POST http://localhost:8080/actuator/refresh
 
 ```bash
 # Validar sintaxe YAML
-yamllint extrato-api/extrato-api-dev.yml
+yamllint extrato-api/banks-conf.yml
 
 # Testar configuração
 curl http://localhost:8889/extrato-api/dev/main | jq
@@ -293,7 +293,7 @@ nslookup financas-config
 
 ```bash
 # Verificar sintaxe YAML
-yamllint extrato-api/extrato-api-dev.yml
+yamllint extrato-api/banks-conf.yml
 
 # Verificar propriedades Spring
 curl http://localhost:8889/extrato-api/dev/main | jq '.propertySources[].source'

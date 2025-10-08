@@ -40,13 +40,13 @@ Para adicionar uma nova configuração:
 
 1. **Crie o arquivo** na pasta da aplicação:
 ```bash
-# Exemplo: extrato-api-prod.yml
-touch extrato-api/extrato-api-prod.yml
+# Exemplo: observability.yml
+touch extrato-api/observability.yml
 ```
 
 2. **Adicione as configurações:**
 ```yaml
-# extrato-api-prod.yml
+# observability.yml
 spring:
   profiles:
     active: prod
@@ -70,7 +70,7 @@ Para atualizar uma configuração:
 1. **Edite o arquivo** desejado
 2. **Commit a mudança:**
 ```bash
-git add extrato-api/extrato-api-dev.yml
+git add extrato-api/banks-conf.yml
 git commit -m "fix: update database connection timeout"
 git push origin main
 ```
