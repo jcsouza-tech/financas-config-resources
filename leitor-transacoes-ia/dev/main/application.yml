@@ -1,0 +1,154 @@
+# Configuração do Leitor Transações IA - Ambiente de Desenvolvimento
+# Este arquivo é servido pelo Config Server
+
+spring:
+  application:
+    name: leitor-transacoes-ia
+  
+  # Configuração do DataSource com HikariCP
+  datasource:
+    url: jdbc:mysql://mysql:3306/financas_db
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: appuser
+    password: apppassword
+    
+    # ✅ Configurações específicas do HikariCP
+    hikari:
+      # Pool de conexões
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      
+      # Configurações de transação
+      auto-commit: false
+      connection-test-query: SELECT 1
+      validation-timeout: 5000
+      
+      # Configurações de performance
+      leak-detection-threshold: 60000
+      register-mbeans: true
+      
+      # Configurações específicas do MySQL
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+  
+  # Configurações JPA com transações
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    
+    # Configurações de transação
+    open-in-view: false
+    
+    # Configurações de performance
+    properties:
+      hibernate:
+        # Configurações de batch
+        jdbc:
+          batch_size: 20
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+        
+        # Configurações de cache
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+        
+        # Configurações de conexão
+        connection:
+          provider_disables_autocommit: true
+        
+        # Configurações de logging
+        format_sql: false
+        use_sql_comments: false
+  
+  # Configuração do RabbitMQ
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: admin123
+    virtual-host: /
+    connection-timeout: 60000
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 1000
+          max-interval: 10000
+          multiplier: 2
+
+# Configuração do Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,configprops,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Configuração de logging
+logging:
+  level:
+    "[br.com.financas.leitor_transacoes_ia]": INFO
+    "[org.springframework.amqp]": WARN
+    "[org.springframework.orm.jpa]": WARN
+
+# Configuração de IA - Escolha do provedor
+# As configurações sensíveis (API keys) devem ser fornecidas via variáveis de ambiente
+ai:
+  provider: ${AI_PROVIDER:placeholder}  # openai, claude, gemini, placeholder
+  api-key: ${AI_API_KEY:placeholder-key}
+  
+  # Configurações específicas por provedor
+  openai:
+    model: ${OPENAI_MODEL:gpt-4}
+    timeout: ${OPENAI_TIMEOUT:30000}
+    max-tokens: ${OPENAI_MAX_TOKENS:4000}
+  
+  claude:
+    model: ${CLAUDE_MODEL:claude-3-sonnet-20240229}
+    timeout: ${CLAUDE_TIMEOUT:30000}
+    max-tokens: ${CLAUDE_MAX_TOKENS:4000}
+  
+  gemini:
+    model: ${GEMINI_MODEL:gemini-1.5-flash}
+    timeout: ${GEMINI_TIMEOUT:30000}
+    max-tokens: ${GEMINI_MAX_TOKENS:4000}
+  
+  # Configurações gerais
+  timeout: 30000
+  max-tokens: 4000
+
+# Configuração de arquivos
+upload:
+  max-file-size: 52428800  # 50MB
+  allowed-types: application/pdf,text/csv
+
+# Configuração de observabilidade
+observability:
+  metrics:
+    enabled: true
+  tracing:
+    enabled: true
+  zipkin:
+    base-url: ${ZIPKIN_BASE_URL:http://zipkin:9411}
