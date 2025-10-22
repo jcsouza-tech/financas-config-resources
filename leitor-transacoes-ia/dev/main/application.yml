@@ -101,10 +101,16 @@ management:
   endpoint:
     health:
       show-details: always
-  metrics:
-    export:
-      prometheus:
+  prometheus:
+    metrics:
+      export:
         enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_BASE_URL:http://zipkin:9411}/api/v2/spans
 
 # Configuração de logging
 logging:
