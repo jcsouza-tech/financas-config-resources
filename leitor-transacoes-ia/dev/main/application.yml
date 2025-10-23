@@ -75,22 +75,20 @@ spring:
         format_sql: false
         use_sql_comments: false
   
-  # Configuração do RabbitMQ
-  rabbitmq:
-    host: rabbitmq
-    port: 5672
-    username: admin
-    password: admin123
-    virtual-host: /
-    connection-timeout: 60000
-    listener:
-      simple:
-        retry:
-          enabled: true
-          max-attempts: 3
-          initial-interval: 1000
-          max-interval: 10000
-          multiplier: 2
+  # Configuração do AWS SQS (LocalStack)
+  cloud:
+    aws:
+      region:
+        static: ${AWS_REGION:us-east-1}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY:test}
+        secret-key: ${AWS_SECRET_KEY:test}
+      sqs:
+        endpoint: ${AWS_SQS_ENDPOINT:http://localstack:4566}
+        queue:
+          auto-create: true
+        listener:
+          auto-startup: true
 
 # Configuração do Actuator
 management:
