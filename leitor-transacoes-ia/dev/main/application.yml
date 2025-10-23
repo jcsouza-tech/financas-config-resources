@@ -75,6 +75,12 @@ spring:
         format_sql: false
         use_sql_comments: false
   
+# Desabilitar RabbitMQ
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+
 # Configuração do AWS SQS (ElasticMQ)
 cloud:
   aws:
